@@ -13,7 +13,6 @@ class ApiHelper:
 
     def get_data(self,url):
         """perform GET request
-
         :param url: API URL
         :return:json result
         """
@@ -52,7 +51,6 @@ class ApiHelper:
 
     def parse_result(self,result):
         """
-
         :param response:
         :return:
         """
