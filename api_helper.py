@@ -39,13 +39,16 @@ class ApiHelper:
             starwars_characters = self.parse_result(response["data"]["results"])
         else :
             people_url = "{}/{}".format(self.url, self.people_endpoint)
+            logging.debug("GET request for url: {}".format(people_url))
             response = self.get_data(people_url)
             pg_url = response["data"]["next"]
+            characters = self.parse_result(response["data"]["results"])
+            starwars_characters.extend(characters)
             while pg_url:
                 logging.debug("GET request for url: {}".format(pg_url))
+                response = self.get_data(pg_url)
                 characters = self.parse_result(response["data"]["results"])
                 starwars_characters.extend(characters)
-                response = self.get_data(pg_url)
                 pg_url = response["data"]["next"]
         return starwars_characters
 
