@@ -2,6 +2,16 @@ import requests
 import logging
 import time
 
+def log_args(func_name):
+    """Decorator function for logging method name and arguments
+    :param func_name: name of the function to be decorated
+    :return: returns original function
+    """
+    def _log_args(*args,**kwargs):
+        logging.debug("Processing Function name:{},arguments:{}".format(func_name.__name__,args[1:]))
+        return (func_name(*args, **kwargs))
+    return _log_args
+
 class ApiHelper:
     def __init__(self):
         self.url = "https://swapi.co/api"
@@ -10,7 +20,7 @@ class ApiHelper:
         timestamp = str(int(time.time()))
         logging.basicConfig(filename='api_helper_{}.log'.format(timestamp),level=logging.DEBUG,
                             filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-
+    @log_args
     def get_data(self,url):
         """perform GET request
         :param url: API URL
@@ -23,6 +33,7 @@ class ApiHelper:
         else:
             return {"data": response.json(), "header":response.headers}
 
+    @log_args
     def star_wars_characters(self, page_nr=None):
         """
         returns a list, of the name, height, and gender of each
@@ -52,6 +63,7 @@ class ApiHelper:
                 pg_url = response["data"]["next"]
         return starwars_characters
 
+    @log_args
     def parse_result(self,result):
         """
         :param response:
